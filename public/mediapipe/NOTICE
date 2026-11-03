@@ -1,0 +1,21 @@
+Fourcee template - third-party notice for the vendored MediaPipe files in this directory tree
+==================================================================================================
+
+This product bundles the following unmodified files from Google LLC. They are licensed under the
+Apache License, Version 2.0 (full text in the LICENSE file next to this NOTICE, also at
+https://www.apache.org/licenses/LICENSE-2.0).
+
+  public/mediapipe/wasm/vision_wasm_internal.js
+  public/mediapipe/wasm/vision_wasm_internal.wasm
+      Source: npm package @mediapipe/tasks-vision@0.10.35 (wasm/ directory), byte-identical copies.
+      Copyright Google LLC (MediaPipe Tasks Vision).
+
+  public/ar/hand_landmarker.task
+      MediaPipe Hand Landmarker model bundle (float16, palm detection + hand landmarks).
+      Source: https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
+      sha256: fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1
+      Copyright Google LLC. Model card: https://developers.google.com/edge/mediapipe/solutions/vision/hand_landmarker
+
+The files were not modified. They are loaded in the visitor browser for on-device hand tracking only.
+MediaPipe is a trademark of Google LLC; no endorsement is implied. Upstream project:
+https://github.com/google-ai-edge/mediapipe

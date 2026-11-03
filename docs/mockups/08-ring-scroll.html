@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>08 · Ring studio — 3D-app motion, Fourcee chrome</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    h1 { font-size: 28px; margin: 8px 0 0; }
+    .swatch { width: 28px; height: 28px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.35); }
+    .swatch.on { outline: 2px solid var(--copper); outline-offset: 3px; }
+    .note { font-size: 11px; color: var(--mute); line-height: 1.5; max-width: 280px; }
+  </style>
+</head>
+<body>
+  <section class="screen">
+    <div style="position:absolute;inset:0;background:radial-gradient(circle at 38% 48%, #3a241c 0%, #120c10 42%, #07080c 100%);"></div>
+    <div class="grid"></div>
+    <div style="position:absolute;inset:0;z-index:2;padding:28px 40px;display:grid;grid-template-columns:1fr 320px;align-items:end;">
+      <div>
+        <p class="kicker">Demo only · not the SOP</p>
+        <h1 class="display">Scroll the piece.<br/>Then build it.</h1>
+        <p class="note" style="margin-top:12px;">Camera path, ring rotation, and metal/gem swaps come from the 3D-app ring (Three.js + GLB). Their marketing site is not here.</p>
+        <div style="display:flex;gap:10px;margin-top:18px;">
+          <span class="chip">01 Arrive</span>
+          <span class="chip"><span class="dot"></span> 02 Turn</span>
+          <span class="chip">03 Build</span>
+        </div>
+      </div>
+      <div class="tile" style="padding:16px;">
+        <p class="kicker">Metal</p>
+        <div style="display:flex;gap:10px;margin:10px 0 16px;">
+          <span class="swatch on" style="background:#d4af37;"></span>
+          <span class="swatch" style="background:#e8eef4;"></span>
+          <span class="swatch" style="background:#c9a08a;"></span>
+          <span class="swatch" style="background:#c2ccd6;"></span>
+        </div>
+        <p class="kicker">Center</p>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;">
+          <span class="chip">Diamond</span>
+          <span class="chip">Ruby</span>
+          <span class="chip">Sapphire</span>
+        </div>
+        <p class="note" style="margin-top:14px;">Yellow gold · diamond. Drag to orbit once the scroll chapter ends.</p>
+      </div>
+    </div>
+    <p class="watermark">Ring · 3D-app GLB + scroll camera + build. Voice agent remains the product.</p>
+  </section>
+</body>
+</html>

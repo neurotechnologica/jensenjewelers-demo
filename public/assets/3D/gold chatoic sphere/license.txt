@@ -1,0 +1,11 @@
+Model Information:
+* title:	Gold Chaotic Esphere
+* source:	https://sketchfab.com/3d-models/gold-chaotic-esphere-697f8571ef6543b0a885f18b97a113bf
+* author:	rodrivgm (https://sketchfab.com/rodrivgm)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Gold Chaotic Esphere" (https://sketchfab.com/3d-models/gold-chaotic-esphere-697f8571ef6543b0a885f18b97a113bf) by rodrivgm (https://sketchfab.com/rodrivgm) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

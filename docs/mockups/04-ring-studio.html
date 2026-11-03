@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>04 · Ring studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .stage {
+      position: absolute;
+      inset: 0;
+      background: url("plates/plate_ring_studio.png") center / cover no-repeat;
+    }
+    .veil {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(5,10,16,0.28) 0%, rgba(5,10,16,0.08) 38%, rgba(5,10,16,0.55) 62%, rgba(5,10,16,0.2) 100%);
+    }
+    .copy {
+      position: absolute;
+      left: 48px;
+      top: 40px;
+      width: 380px;
+      z-index: 2;
+    }
+    h1 { font-size: 28px; line-height: 0.95; margin: 10px 0 12px; color: var(--paper); }
+    .panel {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-8%, -42%);
+      width: 380px;
+      z-index: 3;
+    }
+    .swatch {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .row { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+  </style>
+</head>
+<body>
+  <section class="screen" id="ring">
+    <div class="stage"></div>
+    <div class="veil"></div>
+    <div class="copy">
+      <p class="kicker">Rossi Haute Joaillerie · configurator</p>
+      <h1 class="display">Private<br />ring studio</h1>
+    </div>
+    <div class="panel tile">
+      <p class="muted" style="line-height:1.5; font-size:13px; margin:0 0 16px;">
+        Show the stone and metal before the showroom. Optional JSON key <code>ringBuilder</code> — older Neuro payloads omit it and still work.
+      </p>
+      <p class="kicker">Metal</p>
+      <div class="row">
+        <span class="chip" style="border-color:var(--copper);"><span class="swatch" style="background:#d4af37;"></span> Yellow gold</span>
+        <span class="chip"><span class="swatch" style="background:#e8eef4;"></span> White gold</span>
+        <span class="chip"><span class="swatch" style="background:#c9a08a;"></span> Rose gold</span>
+        <span class="chip"><span class="swatch" style="background:#c2ccd6;"></span> Platinum</span>
+      </div>
+      <p class="kicker" style="margin-top:18px;">Center stone</p>
+      <div class="row">
+        <span class="chip" style="border-color:#8ec8e6;"><span class="swatch" style="background:#f4fbff;"></span> Diamond</span>
+        <span class="chip"><span class="swatch" style="background:#c81e3a;"></span> Ruby</span>
+        <span class="chip"><span class="swatch" style="background:#2f5ea8;"></span> Sapphire</span>
+        <span class="chip"><span class="swatch" style="background:#1f7a4d;"></span> Emerald</span>
+      </div>
+    </div>
+    <p class="watermark">Inspired by 3D-app control pattern · toggle ringBuilder.enabled · assets not vendored</p>
+  </section>
+</body>
+</html>

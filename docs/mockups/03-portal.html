@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>03 · Concierge portal HUD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(4,12,20,0.55), rgba(4,12,20,0.78)),
+        url("plates/plate_hud_atmosphere.png") center / cover no-repeat;
+    }
+    h1 { font-size: 22px; margin: 8px 0 0; }
+    .kpi { font-size: 20px; margin: 10px 0 0; }
+    .row { display:grid; grid-template-columns: 1.1fr 0.9fr; gap:14px; margin-top:16px; }
+    .call { border-bottom:1px solid rgba(255,255,255,0.08); padding: 10px 0; }
+    .call:last-child { border-bottom: 0; }
+  </style>
+</head>
+<body>
+  <section class="screen" id="portal">
+    <div class="bg"></div>
+    <div class="grid"></div>
+    <div style="position:absolute; inset:0; padding: 32px 44px; z-index:2;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+        <div>
+          <p class="kicker">Rossi Haute Joaillerie · London</p>
+          <h1 class="hud">Concierge intelligence portal</h1>
+        </div>
+        <p class="mono muted" style="font-size:12px;">23:51:08 UTC-OPS · AUDIT-MRDXMO1F</p>
+      </div>
+      <div style="display:flex; gap:8px; margin:18px 0 20px; flex-wrap:wrap;">
+        <span class="chip"><span class="dot"></span> Voice 02</span>
+        <span class="chip"><span class="dot"></span> SMS 01</span>
+        <span class="chip">Web 00</span>
+        <span class="chip">Brain sync online</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px;">
+        <div class="tile"><p class="kicker">Revenue saved</p><p class="kpi" style="color:var(--copper);">$128,400</p></div>
+        <div class="tile"><p class="kicker">Appointments booked</p><p class="kpi">51</p></div>
+        <div class="tile"><p class="kicker">Avg handle</p><p class="kpi">1.2 min</p></div>
+      </div>
+      <div class="row">
+        <div class="tile" style="min-height: 318px;">
+          <p class="kicker">Live calls</p>
+          <div class="call">
+            <p style="margin:0;">Amelia Stone · Oval diamond · $$$</p>
+            <p class="muted" style="font-size:12px; margin:4px 0 0;">+1 (212) 555-0191 · 01:42</p>
+          </div>
+          <div class="call">
+            <p style="margin:0;">Noah Patel · Custom halo · $$</p>
+            <p class="muted" style="font-size:12px; margin:4px 0 0;">+1 (917) 555-0107 · 00:52</p>
+          </div>
+        </div>
+        <div class="tile" style="min-height: 318px;">
+          <p class="kicker">Transcript · live 01:42</p>
+          <p style="margin:16px 0 10px; font-size:14px; line-height:1.5;"><span style="color:var(--copper);">Agent</span> Thank you for calling Rossi. How may I assist?</p>
+          <p style="margin:0 0 10px; font-size:14px; line-height:1.5;"><span style="color:#8ec8e6;">Customer</span> Eye-clean ovals around 2 carats.</p>
+          <p style="margin:0; font-size:14px; line-height:1.5;"><span style="color:var(--copper);">Agent</span> I can hold a 2 PM private viewing.</p>
+        </div>
+      </div>
+    </div>
+    <p class="watermark">Portal simulation · liveDemo.* from Neuro JSON</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>01 · Landing / hero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .hero-photo {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(5,27,45,0.12) 0%, rgba(5,27,45,0.18) 42%, rgba(5,27,45,0.78) 68%, rgba(5,27,45,0.92) 100%),
+        url("plates/plate_hero_ring.png") center / cover no-repeat;
+    }
+    .copy {
+      position: absolute;
+      right: 72px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 560px;
+      z-index: 2;
+    }
+    h1 {
+      font-size: 42px;
+      line-height: 0.95;
+      margin: 18px 0 14px;
+      color: var(--paper);
+    }
+    .sub {
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--ice);
+      margin: 0 0 28px;
+    }
+  </style>
+</head>
+<body>
+  <section class="screen" id="landing">
+    <div class="hero-photo"></div>
+    <div class="grid"></div>
+    <nav class="nav">
+      <div class="brand"><span class="mark"></span> Fourcee · Concierge</div>
+      <div class="chip">Direction mockup · not production</div>
+    </nav>
+    <div class="copy">
+      <div class="chip"><span class="dot"></span> Concierge standby · audit compiled</div>
+      <h1 class="display">The gold standard<br />of voice AI</h1>
+      <p class="sub">Tailored exclusively for high-end jewelers</p>
+      <div class="tile" style="max-width: 440px; margin-bottom: 24px;">
+        <p class="kicker">Prepared for</p>
+        <p style="margin: 8px 0 0; font-size: 20px;">Rossi Haute Joaillerie</p>
+        <p class="muted" style="margin: 6px 0 0; font-size: 13px; line-height: 1.5;">One recovered client can cover months of platform cost.</p>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <span class="btn btn-primary">Access my custom audit</span>
+        <span class="btn btn-ghost">Calculate ROI</span>
+      </div>
+    </div>
+    <p class="watermark">Neuro content.json wiring stays frozen</p>
+  </section>
+</body>
+</html>

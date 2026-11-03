@@ -1,0 +1,8 @@
+{
+  "name": "Fourcee - Premium AI Receptionist for Jewelers",
+  "description": "A luxury-focused landing page and platform for Fourcee, an AI voice agent tailored for the jewelry industry. Features ROI calculators, multi-step checkout, and SEO-optimized blog.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

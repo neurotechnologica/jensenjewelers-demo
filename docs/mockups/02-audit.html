@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>02 · Personalized audit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    .screen {
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 40%, rgba(200,181,143,0.08), transparent 55%),
+        linear-gradient(180deg, #071827 0%, #051b2d 55%, #04131f 100%);
+    }
+    .phone {
+      position: absolute;
+      right: -20px;
+      top: 40px;
+      width: 620px;
+      height: 760px;
+      background: url("plates/plate_missed_call_phone.png") center / contain no-repeat;
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.45));
+    }
+    .missed {
+      position: absolute;
+      right: 86px;
+      bottom: 86px;
+      width: 300px;
+      z-index: 3;
+    }
+  </style>
+</head>
+<body>
+  <section class="screen" id="audit">
+    <div class="grid"></div>
+    <div style="position:absolute; inset:0; padding: 36px 56px; z-index:2;">
+      <div class="tile" style="display:flex; justify-content:space-between; align-items:center; border-radius:22px;">
+        <div>
+          <p class="kicker">Audit prepared for</p>
+          <p style="margin:4px 0 0; font-size:16px;">Rossi Haute Joaillerie · London</p>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <span class="chip">Generated April 15, 2026</span>
+          <span class="chip">Report AUDIT-MRDXMO1F</span>
+        </div>
+      </div>
+      <div style="margin-top:48px; max-width:700px;">
+        <p class="kicker">Lost revenue proof</p>
+        <h1 class="display" style="font-size:48px; line-height:0.95; margin:12px 0 8px; color:var(--paper); letter-spacing:-0.01em;">$16,000–$26,000</h1>
+        <p style="font-size:16px; color:var(--copper); margin:0;">walks out every month unanswered.</p>
+        <p class="muted" style="margin:14px 0 0; font-size:14px; max-width:520px; line-height:1.55;">
+          Mid-range leak $21,000 / mo · six-month cumulative $126,000. Estimates from Neuro <code>revenueModel</code> — no renamed keys.
+        </p>
+        <div style="display:grid; grid-template-columns:repeat(3,160px); gap:12px; margin:28px 0;">
+          <div class="tile"><p class="kicker">Inbound / week</p><p style="font-size:18px; margin:8px 0 0;">30–40</p></div>
+          <div class="tile"><p class="kicker">Answer rate</p><p style="font-size:18px; margin:8px 0 0;">34–39%</p></div>
+          <div class="tile"><p class="kicker">Missed / week</p><p style="font-size:18px; margin:8px 0 0;">20–26</p></div>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <span class="btn btn-primary">Recover this revenue</span>
+          <span class="btn btn-ghost">See the proof</span>
+        </div>
+      </div>
+    </div>
+    <div class="phone"></div>
+    <div class="missed tile">
+      <p class="kicker">After-hours inquiry</p>
+      <p style="font-size:13px; color:#f2d4d0; margin:12px 0 0;">Missed · Sunday 8:14 PM</p>
+      <p style="font-size:20px; margin:6px 0;">$12,000 anniversary band</p>
+      <p class="muted" style="font-size:13px; line-height:1.45; margin:0;">Caller did not wait. Next jeweler is already in the recents list.</p>
+    </div>
+    <p class="watermark">Injection points: business.name · revenueModel.* · auditMeta.* · liveDemo.*</p>
+  </section>
+</body>
+</html>

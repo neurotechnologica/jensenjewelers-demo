@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sphere and rotated rings
+* source:	https://sketchfab.com/3d-models/sphere-and-rotated-rings-51792914ce6c442ca36153c4c06e55e5
+* author:	Adamante (https://sketchfab.com/Adamant6686)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sphere and rotated rings" (https://sketchfab.com/3d-models/sphere-and-rotated-rings-51792914ce6c442ca36153c4c06e55e5) by Adamante (https://sketchfab.com/Adamant6686) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

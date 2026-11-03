@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>06 · Plain-English onboarding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    h1 { font-size: 22px; margin: 8px 0 0; }
+    .step { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mute); }
+    .step.on { color: var(--copper); }
+    .card { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,0.03); }
+    .ok { color: #8fd4a8; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+  </style>
+</head>
+<body>
+  <section class="screen">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,#061018,#0a1824 55%,#07141c);"></div>
+    <div class="grid"></div>
+    <div style="position:absolute;inset:0;padding:28px 40px;z-index:2;display:grid;grid-template-columns:1.15fr 0.85fr;gap:22px;">
+      <div>
+        <p class="kicker">Client onboarding · 2 of 4</p>
+        <h1 class="display">Tell us how the store actually works.</h1>
+        <p class="muted" style="font-size:13px;line-height:1.55;max-width:520px;margin:10px 0 16px;">No API keys on day one. Write it like you would text the manager. We turn the paragraph into integrations you can correct.</p>
+        <div class="tile" style="min-height: 280px; padding: 16px 18px;">
+          <p class="kicker">Plain English</p>
+          <p style="font-size:14px;line-height:1.55;margin:14px 0 0;color:var(--paper);">
+            We answer on the front-desk iPhone. Bridal sits on Jane’s Google Calendar. Stones are looked up in Nivoda. After 6, text the client — only call the owner if it looks over 10k. WhatsApp is on for the Miami store only.
+          </p>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:16px;">
+          <span class="step">1 Hours</span>
+          <span class="step on">2 Integrations</span>
+          <span class="step">3 Voice</span>
+          <span class="step">4 Review</span>
+        </div>
+      </div>
+      <div>
+        <p class="kicker" style="margin-bottom:12px;">We heard</p>
+        <div class="card" style="margin-bottom:10px;">
+          <p style="margin:0;font-size:13px;">Phone · Front desk iPhone</p>
+          <p class="ok" style="margin:4px 0 0;">Mapped · number still needed</p>
+        </div>
+        <div class="card" style="margin-bottom:10px;">
+          <p style="margin:0;font-size:13px;">Calendar · Jane / Google · bridal</p>
+          <p class="ok" style="margin:4px 0 0;">Mapped · invite Jane</p>
+        </div>
+        <div class="card" style="margin-bottom:10px;">
+          <p style="margin:0;font-size:13px;">Inventory · Nivoda</p>
+          <p class="ok" style="margin:4px 0 0;">Mapped · token at handover</p>
+        </div>
+        <div class="card" style="margin-bottom:10px;">
+          <p style="margin:0;font-size:13px;">After-hours · SMS, escalate &gt; $10k</p>
+          <p class="ok" style="margin:4px 0 0;">Rule drafted</p>
+        </div>
+        <div class="card">
+          <p style="margin:0;font-size:13px;">WhatsApp · Miami only</p>
+          <p class="ok" style="margin:4px 0 0;">Scoped to one store</p>
+        </div>
+        <p class="muted" style="font-size:11px;margin-top:14px;line-height:1.5;">Wrong card? Tap to edit. The original paragraph is kept for the developer packet.</p>
+      </div>
+    </div>
+    <p class="watermark">Onboarding · plain English in, structured integrations out</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>05 · Voice ops — calls, transcript, actions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    h1 { font-size: 15px; margin: 6px 0 0; letter-spacing: 0.16em; }
+    .kpi { font-size: 20px; margin: 6px 0 0; font-weight: 500; }
+    .tab { font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; padding: 6px 11px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); color: var(--ice); }
+    .tab.on { background: linear-gradient(90deg, var(--copper-hi), var(--copper)); color: #1a140c; border-color: transparent; }
+    .status { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: #8fd4a8; }
+    .row3 { display: grid; grid-template-columns: 0.92fr 1.08fr 0.9fr; gap: 12px; margin-top: 14px; }
+    .log { border-bottom: 1px solid rgba(255,255,255,0.07); padding: 8px 0; }
+    .log:last-child { border-bottom: 0; }
+    .line { font-size: 12px; line-height: 1.45; margin: 0 0 8px; }
+    .act { font-size: 11px; padding: 7px 0; border-bottom: 1px solid rgba(255,255,255,0.07); display: flex; justify-content: space-between; gap: 8px; }
+  </style>
+</head>
+<body>
+  <section class="screen" id="ops">
+    <div class="bg" style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,12,20,0.62),rgba(4,12,20,0.82)),url('plates/plate_hud_atmosphere.png') center/cover no-repeat;"></div>
+    <div class="grid"></div>
+    <div style="position:absolute;inset:0;padding:26px 36px;z-index:2;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <div>
+          <p class="kicker">Voice agent · not a ring studio</p>
+          <h1 class="hud">Fourcee ops</h1>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <span class="tab on">Calls</span>
+          <span class="tab">Onboard</span>
+          <span class="tab">Handover</span>
+          <span class="tab">Studio</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin:14px 0 12px;flex-wrap:wrap;">
+        <span class="chip"><span class="dot"></span> Voice 02 live</span>
+        <span class="chip">Booked 51</span>
+        <span class="chip">Escalations 1</span>
+        <span class="chip">SOP · answer → qualify → act → log</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+        <div class="tile"><p class="kicker">Recovered</p><p class="kpi" style="color:var(--copper);">$128k</p></div>
+        <div class="tile"><p class="kicker">Booked today</p><p class="kpi">7</p></div>
+        <div class="tile"><p class="kicker">Avg handle</p><p class="kpi">1.2m</p></div>
+        <div class="tile"><p class="kicker">Follow-ups owed</p><p class="kpi">3</p></div>
+      </div>
+      <div class="row3">
+        <div class="tile" style="min-height: 390px;">
+          <p class="kicker">Call log</p>
+          <div class="log">
+            <p style="margin:0;font-size:13px;">Amelia Stone</p>
+            <p class="muted" style="font-size:11px;margin:3px 0 0;">Oval 2ct · 01:42 · <span class="status">live</span></p>
+          </div>
+          <div class="log">
+            <p style="margin:0;font-size:13px;">Noah Patel</p>
+            <p class="muted" style="font-size:11px;margin:3px 0 0;">Halo redesign · 00:52 · <span class="status">live</span></p>
+          </div>
+          <div class="log">
+            <p style="margin:0;font-size:13px;">Harper Wellington</p>
+            <p class="muted" style="font-size:11px;margin:3px 0 0;">Saturday viewing · <span class="status" style="color:var(--copper);">booked</span></p>
+          </div>
+          <div class="log">
+            <p style="margin:0;font-size:13px;">Sophia Vale</p>
+            <p class="muted" style="font-size:11px;margin:3px 0 0;">Lab bridal · <span class="status" style="color:#8ec8e6;">follow_up</span></p>
+          </div>
+        </div>
+        <div class="tile" style="min-height: 390px;">
+          <p class="kicker">Transcript</p>
+          <p class="line" style="margin-top:12px;"><span style="color:var(--copper);">Agent 00:02</span> Thank you for calling Rossi. How may I assist?</p>
+          <p class="line"><span style="color:#8ec8e6;">Amelia 00:08</span> Eye-clean ovals around two carats.</p>
+          <p class="line"><span style="color:var(--copper);">Agent 00:14</span> I can compare two certified stones and hold a 2 PM private viewing.</p>
+          <p class="line"><span style="color:#8ec8e6;">Amelia 00:28</span> Please hold the 2 PM.</p>
+          <p class="line"><span style="color:var(--copper);">Agent 00:38</span> Locked. Confirmation is on its way to this number.</p>
+        </div>
+        <div class="tile" style="min-height: 390px;">
+          <p class="kicker">Actions · status</p>
+          <div class="act"><span>Calendar write</span><span class="status">booked</span></div>
+          <div class="act"><span>SMS confirmation</span><span class="status">sent</span></div>
+          <div class="act"><span>CRM contact</span><span class="status">updated</span></div>
+          <div class="act"><span>Inventory hold</span><span class="status" style="color:var(--copper);">pending Nivoda</span></div>
+          <div class="act"><span>Human flag</span><span class="muted" style="font-size:11px;">none</span></div>
+          <p class="muted" style="font-size:11px;line-height:1.5;margin:14px 0 0;">SOP check: greeting, qualify, act, confirm, log. Agent did not invent stock.</p>
+        </div>
+      </div>
+    </div>
+    <p class="watermark">Ops · call logs + transcript + actions + status — voice SOP</p>
+  </section>
+</body>
+</html>

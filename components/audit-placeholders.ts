@@ -1,0 +1,6 @@
+export const GBP_PLACEHOLDER_TOKENS = {
+  stars: 'PLACEHOLDER_REVIEW_STARS',
+  ratingOutOf5: 'PLACEHOLDER_RATING_OUT_OF_5',
+  reviewsCount: 'PLACEHOLDER_REVIEWS_COUNT',
+} as const;
+

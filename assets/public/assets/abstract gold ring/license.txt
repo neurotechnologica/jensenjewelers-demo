@@ -1,0 +1,11 @@
+Model Information:
+* title:	Abstract Gold Ring
+* source:	https://sketchfab.com/3d-models/abstract-gold-ring-2ed388b3be2744889cc8ad5d0afcb523
+* author:	Emilio.Gallo (https://sketchfab.com/Emilio.Gallo)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Abstract Gold Ring" (https://sketchfab.com/3d-models/abstract-gold-ring-2ed388b3be2744889cc8ad5d0afcb523) by Emilio.Gallo (https://sketchfab.com/Emilio.Gallo) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>07 · Developer handover</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600&family=Michroma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="shared.css" />
+  <style>
+    h1 { font-size: 22px; margin: 8px 0 0; }
+    .box { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; background: rgba(255,255,255,0.03); }
+    .chk { font-size: 12px; line-height: 1.55; margin: 0 0 8px; }
+    .gate { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--copper); }
+  </style>
+</head>
+<body>
+  <section class="screen">
+    <div style="position:absolute;inset:0;background:linear-gradient(120deg,#071018 0%,#102033 48%,#0b151c 100%);"></div>
+    <div class="grid"></div>
+    <div style="position:absolute;inset:0;padding:28px 40px;z-index:2;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <div>
+          <p class="kicker">Signed client · handover gate</p>
+          <h1 class="display">Ready for build — Rossi Haute</h1>
+        </div>
+        <p class="gate">Packet 9 / 10 · voice clone pending</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:20px;">
+        <div class="box">
+          <p class="kicker">Answer</p>
+          <p style="font-size:13px;margin:8px 0 0;line-height:1.5;">+1 (212) 555-0140<br/>Display CID: Rossi NYC<br/>Hours: 10–18, Sat 11–16</p>
+        </div>
+        <div class="box">
+          <p class="kicker">Write targets</p>
+          <p style="font-size:13px;margin:8px 0 0;line-height:1.5;">Google Calendar · Jane bridal<br/>HubSpot contacts<br/>Nivoda holds</p>
+        </div>
+        <div class="box">
+          <p class="kicker">Escalate</p>
+          <p style="font-size:13px;margin:8px 0 0;line-height:1.5;">Owner after 18:00 if &gt; $10k<br/>Design specialist for custom<br/>Never legal on the line</p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.1fr 0.9fr;gap:14px;margin-top:16px;">
+        <div class="tile" style="min-height: 340px;">
+          <p class="kicker">Engineering checklist</p>
+          <p class="chk" style="margin-top:14px;">☑ Provision inbound number + recording consent</p>
+          <p class="chk">☑ Calendar scopes (create + busy read)</p>
+          <p class="chk">☑ CRM field map (name, phone, intent, status)</p>
+          <p class="chk">☑ Nivoda read + 24h hold</p>
+          <p class="chk">☐ Voice clone — waiting on Jane’s 60s sample</p>
+          <p class="chk">☐ QA call: book, hold, escalate, after-hours SMS</p>
+          <p class="chk">☐ Go-live with owner on the line</p>
+        </div>
+        <div class="tile" style="min-height: 340px;">
+          <p class="kicker">Do-not-do (client words)</p>
+          <p style="font-size:13px;line-height:1.55;margin:14px 0 0;">Don’t mention lab-grown unless they ask. Don’t book Sunday. Don’t text the owner’s personal WhatsApp. If someone asks for Isaac, transfer — never take a message.</p>
+          <p class="muted" style="font-size:11px;margin-top:18px;line-height:1.5;">Handover unlocks only after sign. Until then this tab is a preview, not a work order.</p>
+        </div>
+      </div>
+    </div>
+    <p class="watermark">Handover · engineering does not provision on a Slack thread</p>
+  </section>
+</body>
+</html>

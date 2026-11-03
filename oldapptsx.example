@@ -1,0 +1,1035 @@
+import React, { useState, useEffect, useRef } from 'react';
+import { AppView, BlogPost } from './types';
+import { FloatingNav } from './components/FloatingNav';
+
+import logoUrl from './assets/logo.png';
+import demoImage from './public/assets/placeholder.gif';
+import workflowImage from './assets/workflow5.png';
+import nivodaGif from './public/assets/nivoda.gif';
+import fcWhite from './public/assets/fcwhite.png';
+import fcBlack from './public/assets/fcblack.png';
+import { ValueCalculator } from './components/ValueCalculator';
+import { EtherealShadow } from './components/ui/etheral-shadow';
+import { DottedSurface } from './components/ui/dotted-surface';
+import DisplayCards from './components/ui/display-cards';
+import { PendantFBX } from './components/PendantFBX';
+import { IncomingCallPhone } from './components/ui/incoming-call-phone';
+import { MiniPhone } from './components/ui/mini-phone';
+import { PhoneCall, ChevronDown } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { CheckoutFlow } from './components/CheckoutFlow';
+import { CRMView } from './components/CRMView';
+import { AdminDashboard } from './components/AdminDashboard';
+import { SplashScreen } from './components/SplashScreen';
+import { PhoneTester } from './components/PhoneTester';
+import { FloatingCalendar } from './components/FloatingCalendar';
+import { FaqMonochrome } from './components/ui/faq-monochrome.tsx';
+import { ArticleCard } from './components/ui/blog-post-card';
+import { FloatingAiAssistant } from './components/ui/glowing-ai-chat-assistant';
+import { BLOG_POSTS } from './constants';
+import { AuditPage } from './components/AuditPage';
+import type { AuditData } from './types/audit';
+
+const INTEGRATIONS_DATA = [
+  {
+    category: "CRM Platforms",
+    popular: ["Salesforce", "HubSpot"],
+    others: ["Zoho CRM", "Pipedrive", "GoHighLevel", "monday CRM"],
+    description: "For lead creation, customer notes, history pulls, and automated tagging."
+  },
+  {
+    category: "Calendar & Scheduling",
+    popular: ["Google Calendar", "Calendly"],
+    others: ["Microsoft Outlook", "Office 365", "Apple Calendar"],
+    description: "Seamless consultation booking and staff availability sync."
+  },
+  {
+    category: "E-commerce & Orders",
+    popular: ["Shopify", "WooCommerce"],
+    others: ["BigCommerce", "Squarespace Commerce", "Magento", "Adobe Commerce"],
+    description: "Real-time order status, inventory checks, and cross-channel sync."
+  },
+  {
+    category: "Jewelry-Specific ERP/POS",
+    popular: ["Nivoda", "Jewel360"],
+    others: ["PIRO", "Gem Logic", "Orderry", "GOIS", "CaratIQ", "SalesBinder", "RapNet", "IDEXonline"],
+    description: "Deep Nivoda integration for live diamond sourcing, repair tracking, and stock checks via direct API."
+  },
+  {
+    category: "Communication & SMS",
+    popular: ["Twilio", "Zapier"],
+    others: ["Vonage", "MessageBird", "Sinch", "Plivo", "RingCentral", "Nextiva"],
+    description: "Automated follow-ups, confirmations, and reminders across all channels."
+  },
+  {
+    category: "Utilities & Enhancements",
+    popular: ["Metal Price APIs", "Google Workspace"],
+    others: ["Make (Integromat)", "Microsoft 365", "Gmail", "Outlook Email"],
+    description: "Real-time gold/diamond rates and broad ecosystem confirmations."
+  }
+];
+
+const JOURNEY_STEPS = [
+  {
+    label: "1. Select package",
+    description: "Choose Starter, Premium or Enterprise based on call volume, complexity and integrations. We'll recommend a tier if you're unsure.",
+  },
+  {
+    label: "2. Onboarding workshop",
+    description: "90-min session to map scripts, tone, safeguards and escalation rules. We capture your brand voice and edge cases.",
+  },
+  {
+    label: "3. Setup & integrations",
+    description: "We wire Nivoda, calendars, telephony and your CRM. You provide access; we handle the technical build and sync logic.",
+  },
+  {
+    label: "4. Testing & hardening",
+    description: "You and your team stress-test every scenario before go-live. No caller hears the AI until you sign off.",
+  },
+  {
+    label: "5. Iterate & refine",
+    description: "We tune prompts and flows from real transcripts until it feels like your showroom — not a generic bot.",
+  },
+  {
+    label: "6. Go-live & handover",
+    description: "We flip the switch together and train your team on controls, overrides and the analytics portal.",
+  },
+  {
+    label: "7. Analytics & CRM portal",
+    description: "Every call, conversion and transcript in one place. Syncs to your CRM for full visibility.",
+  },
+];
+
+const FAQ_ITEMS = [
+  {
+    question: "Is this meant to replace my front-desk team?",
+    answer:
+      "No. Fourcee handles after-hours, overflow and repetitive questions so your team can focus on design consults, VIPs and in-person selling. You control when it answers and when to route straight to a human. Most showrooms see staff time reclaimed, not replaced.",
+    meta: "Team",
+  },
+  {
+    question: "What if Fourcee misunderstands a high‑value client?",
+    answer:
+      "We bias everything toward fail-safe: strict guardrails, human handoff paths and clear escalation rules for high-ticket intents. During testing we rehearse VIP scenarios until you're comfortable. You can always override or add custom escalation triggers.",
+    meta: "Safeguards",
+  },
+  {
+    question: "How heavy is the Nivoda / CRM integration lift on our side?",
+    answer:
+      "We handle the technical build. You provide API access or credentials to Nivoda, calendars and your CRM; we build the flows, sync logic and testing harness. Your team focuses on approvals and edge-case decisions, not middleware or code.",
+    meta: "Integrations",
+  },
+  {
+    question: "What if we don’t like the voice or phrasing?",
+    answer:
+      "Voice, pacing and phrasing are part of onboarding. We can voice-clone a key team member or choose a premium voice, then iterate until it feels like your showroom answering. Revisions are included in the setup phase.",
+    meta: "Brand",
+  },
+  {
+    question: "How are calls recorded and where do the analytics live?",
+    answer:
+      "Every call can be recorded, transcribed and summarised with timestamps. Summaries and stats live in your analytics portal and, where supported, sync directly to your CRM against each contact. You own the data.",
+    meta: "Data",
+  },
+  {
+    question: "What happens if we feel the ROI isn’t there?",
+    answer:
+      "On annual billing, the one-time setup fee is waived. On monthly billing, a setup fee applies by tier. After that, you’re on a simple subscription. If performance isn’t where it should be, we iterate with you. If it still doesn’t fit, we'll discuss pausing or stepping down — no lock-in.",
+    meta: "ROI",
+  },
+];
+
+const App: React.FC = () => {
+  const [currentView, setCurrentView] = useState<AppView>(AppView.LANDING);
+  const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
+  const [isReady, setIsReady] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [showTester, setShowTester] = useState(false);
+  const [expandedIntegration, setExpandedIntegration] = useState<number | null>(null);
+  const [preSelectedPackageId, setPreSelectedPackageId] = useState<string | null>(null);
+  const [auditData, setAuditData] = useState<AuditData | null>(null);
+  const [auditDataLoading, setAuditDataLoading] = useState(true);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  // Load audit data from content.json
+  useEffect(() => {
+    fetch('/content.json')
+      .then(res => res.json())
+      .then((data: AuditData) => {
+        setAuditData(data);
+        setAuditDataLoading(false);
+      })
+      .catch(err => {
+        console.error('Failed to load audit data:', err);
+        setAuditDataLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (el) el.scrollTo({ top: 0, behavior: 'instant' });
+    else window.scrollTo(0, 0);
+  }, [currentView]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  useEffect(() => {
+    let link = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
+    if (!link) {
+      link = document.createElement('link');
+      link.rel = 'icon';
+      document.head.appendChild(link);
+    }
+    link.type = 'image/png';
+    link.href = logoUrl;
+  }, []);
+
+  const navigate = (view: AppView, post?: BlogPost, packageId?: string) => {
+    setCurrentView(view);
+    if (post) setSelectedPost(post);
+    if (view === AppView.CHECKOUT) {
+      setPreSelectedPackageId(packageId ?? null);
+      const el = scrollContainerRef.current;
+      if (el) el.scrollTo({ top: 0, behavior: 'instant' });
+      else window.scrollTo({ top: 0, behavior: 'instant' });
+    } else setPreSelectedPackageId(null);
+  };
+
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+  const openCalendarBooking = () => {
+    window.open('https://calendly.com/fourcee/15min', '_blank', 'noopener,noreferrer');
+  };
+
+  if (!isReady) {
+    return <SplashScreen onComplete={() => setIsReady(true)} />;
+  }
+
+  const LandingPage = ({ scrollContainerRef }: { scrollContainerRef: React.RefObject<HTMLDivElement | null> }) => {
+    const problemRef = useRef<HTMLElement>(null);
+    const demoRef = useRef<HTMLElement>(null);
+    const { scrollYProgress: problemScroll } = useScroll({
+      target: problemRef,
+      offset: ["start end", "end start"],
+      container: scrollContainerRef,
+    });
+    const { scrollYProgress: demoScroll } = useScroll({
+      target: demoRef,
+      offset: ["start end", "center center"],
+      container: scrollContainerRef,
+    });
+
+    const cardsY = useTransform(problemScroll, [0, 1], [-150, 150]);
+    const demoScale = useTransform(demoScroll, [0, 0.5, 1], [0.94, 1, 1]);
+    const demoOpacity = useTransform(demoScroll, [0, 0.4], [0.7, 1]);
+    const demoY = useTransform(demoScroll, [0, 0.5], [16, 0]);
+
+    const scrollToSectionById = (id: string) => {
+      const container = scrollContainerRef.current;
+      if (!container) return;
+      const target = container.querySelector<HTMLElement>(`#${id}`);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    const scrollToRoi = () => scrollToSectionById('roi-calculator');
+    const scrollToPricing = () => navigate(AppView.CHECKOUT);
+
+    return (
+    <div className="animate-in fade-in duration-1000 pb-32 md:pb-40">
+      {/* Hero: ring left (between hero text and Test Fourcee), text + form right; mobile: text → ring → form */}
+      <section className="snap-start snap-always min-h-screen relative flex flex-col items-center justify-center px-4 sm:px-6 pt-12 min-[400px]:pt-10 min-[430px]:pt-8 sm:pt-16 pb-8 md:pt-24 md:pb-24 overflow-hidden bg-transparent transition-colors">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[220px] md:h-[260px]">
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-transparent via-white/60 to-white dark:via-navy-950/70 dark:to-navy-950"
+          />
+          <DottedSurface
+            isDarkMode={isDarkMode}
+            className="bottom-0 h-full w-full opacity-80 [mask-image:linear-gradient(to_top,black,transparent)]"
+          />
+        </div>
+
+        <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-x-20 lg:gap-x-28 md:gap-y-10 items-start md:items-center">
+          {/* Hero text — mobile below 3D object, desktop top-right */}
+          <div className="order-2 md:order-2 md:row-start-1 text-center md:text-right mt-4 md:mt-0">
+            <div className="relative z-10 max-w-2xl md:ml-auto">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-6xl 2xl:text-7xl font-bold mb-3 text-slate-900 dark:text-white serif leading-[1.1] tracking-tighter">
+                The Gold Standard <br/><span className="italic shimmer-text">of Voice AI</span>
+              </h1>
+              <p className="text-xs sm:text-sm md:text-sm lg:text-base text-slate-600 dark:text-navy-300 font-medium leading-relaxed uppercase tracking-[0.25em]">
+                Tailored exclusively for high-end jewelers
+              </p>
+            </div>
+          </div>
+          {/* Ring — mobile above text (under logo), desktop left and vertically centered; tighter to logo on mobile, bigger on Pro Max / large phones */}
+          <div className="order-1 md:order-1 md:row-span-2 md:self-center flex justify-center w-full min-w-0 relative -mt-1 min-[430px]:-mt-2">
+            <div className="relative w-full max-w-[130px] min-[340px]:max-w-[180px] min-[375px]:max-w-[220px] min-[430px]:max-w-[280px] sm:max-w-[320px] md:max-w-[560px] lg:max-w-[680px] xl:max-w-[760px] 2xl:max-w-[840px] aspect-square max-h-[22vh] min-[340px]:max-h-[28vh] min-[375px]:max-h-[32vh] min-[430px]:max-h-[38vh] sm:max-h-[42vh] md:max-h-[70vh] lg:max-h-[75vh] min-h-[110px] min-[340px]:min-h-[150px] min-[375px]:min-h-[180px] min-[430px]:min-h-[240px] sm:min-h-[260px] md:min-h-[380px] lg:min-h-[420px] [contain:layout]">
+              <PendantFBX className="w-full h-full relative z-10" isDarkMode={isDarkMode} />
+              {/* Object shadow beneath 3D so it appears grounded */}
+              <div
+                className="absolute left-1/2 -translate-x-1/2 z-0 pointer-events-none"
+                style={{
+                  bottom: '-8%',
+                  width: '75%',
+                  height: '24%',
+                  background: isDarkMode
+                    ? 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, transparent 70%)'
+                    : 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(16,42,67,0.2) 0%, rgba(16,42,67,0.08) 40%, transparent 70%)',
+                  filter: 'blur(6px)',
+                  borderRadius: '50%',
+                }}
+                aria-hidden
+              />
+            </div>
+          </div>
+          {/* Mobile ROI CTA — sits above Test Fourcee on small screens */}
+          <div className="order-3 w-full flex justify-center md:hidden mt-4">
+            <button
+              type="button"
+              onClick={scrollToRoi}
+              className="group inline-flex items-center gap-2 rounded-full border border-navy-300/60 bg-white/80 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.25em] text-slate-800 shadow-sm hover:bg-white transition-colors"
+            >
+              <span>Calculate ROI now</span>
+              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-navy-900 text-white shadow">
+                <ChevronDown className="w-3 h-3 group-hover:translate-y-0.5 transition-transform" />
+              </span>
+            </button>
+          </div>
+
+          {/* Test Fourcee — mobile last, desktop bottom-right; smaller on very small phones */}
+          <div className="order-4 md:order-3 md:row-start-2 flex justify-center md:justify-end">
+            <div className="w-full max-w-[130px] min-[340px]:max-w-[160px] min-[375px]:max-w-[200px] sm:max-w-[280px] md:max-w-sm">
+              <MiniPhone isDarkMode={isDarkMode} />
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-10 md:mt-12 hidden md:flex justify-center">
+          <button
+            type="button"
+            onClick={scrollToRoi}
+            className="group inline-flex items-center gap-3 rounded-full border border-navy-300/60 dark:border-navy-600/60 bg-white/70 dark:bg-white/5 px-6 py-2.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-navy-700 dark:text-navy-100 shadow-sm hover:bg-white dark:hover:bg-white/10 transition-colors"
+          >
+            <span>Calculate ROI now</span>
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy-900 text-white dark:bg-white dark:text-navy-950 shadow">
+              <ChevronDown className="w-3 h-3 group-hover:translate-y-0.5 transition-transform" />
+            </span>
+          </button>
+        </div>
+      </section>
+
+      {/* Demo Video Section - now directly after hero; 9:16 portrait on mobile */}
+      <section ref={demoRef} id="demo" className="snap-start snap-always min-h-screen flex flex-col justify-center py-24 md:py-32 px-4 sm:px-6 bg-transparent relative">
+        <div className="max-w-6xl mx-auto flex flex-col items-center w-full min-w-0">
+          <h2 className="text-4xl md:text-6xl font-bold serif text-navy-900 dark:text-white mb-8 md:mb-12 text-center tracking-tighter">Experience the Demo</h2>
+          <motion.div
+            style={{ scale: demoScale, opacity: demoOpacity, y: demoY }}
+            className="relative w-full max-w-[280px] aspect-[9/16] md:max-w-4xl md:aspect-video rounded-2xl md:rounded-[3rem] overflow-hidden shadow-[0_40px_100px_-20px_rgba(0,0,0,0.3)] group origin-center"
+          >
+             <img src={demoImage} alt="Demo" className="w-full h-full object-cover brightness-50 group-hover:scale-105 transition-transform duration-1000" />
+             <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4 md:p-0">
+                <button className="w-16 h-16 md:w-24 md:h-24 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center hover:scale-110 active:scale-95 transition-all shrink-0">
+                  <svg className="w-8 h-8 md:w-10 md:h-10 ml-1 md:ml-2" fill="currentColor" viewBox="0 0 20 20"><path d="M4.018 14L14.41 8 4.018 2v12z"/></svg>
+                </button>
+                <div className="mt-4 md:mt-8 text-center max-w-md px-2 md:px-6">
+                  <p className="text-sm md:text-xl serif italic leading-relaxed">"Fourcee didn't just replace our receptionist; it enhanced the entire client experience. Our ROI was instant."</p>
+                  <p className="text-[9px] md:text-[10px] uppercase font-bold mt-2 md:mt-4 tracking-widest">— Julianna Rossi, Rossi Haute Joaillerie</p>
+                </div>
+             </div>
+          </motion.div>
+          <div className="mt-10 flex justify-center">
+            <button
+              type="button"
+              onClick={scrollToPricing}
+              className="inline-flex items-center gap-2 rounded-full bg-navy-900 text-white dark:bg-white dark:text-navy-950 px-7 py-3 text-[10px] font-bold uppercase tracking-[0.25em] shadow-2xl hover:scale-105 active:scale-95 transition-all"
+            >
+              <span>Select a package</span>
+            </button>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 md:h-72">
+          <DottedSurface
+            isDarkMode={isDarkMode}
+            className="h-full w-full opacity-75 [mask-image:linear-gradient(to_top,black,transparent)]"
+          />
+        </div>
+      </section>
+
+      {/* Value Calculator Section - before ROI messaging; its own snap after demo */}
+      <section id="roi-calculator" className="snap-start snap-always min-h-screen flex flex-col justify-center px-4 sm:px-6 py-16 md:py-24 bg-transparent">
+        <div className="w-full max-w-4xl mx-auto">
+          <ValueCalculator />
+        </div>
+      </section>
+
+      {/* ROI Messaging Section (without calculator, stacked on mobile) */}
+      <section className="snap-start snap-always min-h-screen flex flex-col justify-center px-4 sm:px-6 py-16 md:py-24 bg-transparent">
+        <div className="w-full max-w-6xl mx-auto grid gap-10 lg:gap-16 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] items-start">
+          <div className="space-y-6">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-navy-400 dark:text-navy-300">
+              See if the numbers make sense
+            </p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold serif text-navy-900 dark:text-white tracking-tight">
+              Is Fourcee actually worth it
+              <br className="hidden md:block" /> for your showroom?
+            </h2>
+            <p className="text-sm sm:text-base text-navy-600 dark:text-navy-300 max-w-xl">
+              Use your real averages to understand the real value of answered calls, reclaimed staff time, and higher-intent leads.
+            </p>
+          </div>
+          <div className="flex flex-col gap-6">
+            <div className="glass-card p-8 rounded-[2.5rem] border border-navy-50 shadow-xl dark:border-navy-800">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-emerald-400 mb-4 flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+                </span>
+                Live Performance Signals
+              </p>
+              <div className="space-y-4">
+                {[
+                  "95%+ Resolution Rate on qualified calls",
+                  "24/7 coverage while your team sleeps",
+                  "Analytics portal and CRM view of every conversation",
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-3">
+                    <div className="w-1.5 h-1.5 bg-navy-900 dark:bg-white rounded-full" />
+                    <span className="font-bold text-base md:text-lg text-navy-900 dark:text-navy-50 tracking-tight">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <button
+              onClick={() => navigate(AppView.CHECKOUT)}
+              className="w-full py-5 bg-navy-900 dark:bg-white dark:text-navy-950 text-white rounded-full font-bold text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-2xl"
+            >
+              Configure your solution →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem Step - moved below calculator: blue + grid faded at top and bottom */}
+      <section ref={problemRef} className="snap-start snap-always min-h-screen flex flex-col justify-center py-32 px-6 text-white relative overflow-hidden border-y border-white/5">
+        <div
+          className="absolute inset-0 pointer-events-none bg-navy-950"
+          style={{
+            backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            maskSize: '100% 100%',
+          }}
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 md:h-72">
+          <DottedSurface
+            isDarkMode
+            className="h-full w-full opacity-80 [mask-image:linear-gradient(to_top,black,transparent)]"
+          />
+        </div>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center relative z-10">
+          <div className="space-y-10">
+            <h2 className="text-4xl md:text-7xl font-bold serif leading-tight">
+              Silence is <br/><span className="italic text-silver-400">Expensive</span>
+            </h2>
+            <p className="text-xl text-silver-300 font-light leading-relaxed max-w-lg">
+              Every missed call after 6 PM is a client wandering into your competitor's showroom. Fourcee captures the revenue you're currently leaving on the table.
+            </p>
+            <div className="flex gap-12">
+              <div>
+                <p className="text-5xl font-bold mb-1 serif">$50k</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-silver-500">Annual Opportunity Loss</p>
+              </div>
+              <div>
+                <p className="text-5xl font-bold mb-1 serif">0</p>
+                <p className="text-[10px] uppercase tracking-[0.2em] font-bold text-silver-500">Missed Opportunities with AI</p>
+              </div>
+            </div>
+          </div>
+          <div className="relative h-[320px] sm:h-[400px] md:h-[500px] flex items-start justify-center pt-4 overflow-visible">
+            <motion.div 
+              style={{ y: cardsY }}
+              className="relative group z-10 mt-8 md:mt-16 scale-[0.55] sm:scale-75 md:scale-100 origin-center"
+            >
+              <div className="absolute -inset-10 bg-navy-900/50 blur-[100px] group-hover:bg-navy-800/50 transition-all"></div>
+              <DisplayCards 
+                cards={[
+                  {
+                    icon: <PhoneCall className="size-4 text-red-400" />,
+                    title: "Missed Opportunity",
+                    description: "$12,000 Anniversary Inquiry",
+                    date: "Sunday, 8:14 PM",
+                    iconClassName: "text-red-500",
+                    titleClassName: "text-red-500",
+                    className: "[grid-area:stack] -translate-y-6 hover:-translate-y-10 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                  },
+                  {
+                    icon: <PhoneCall className="size-4 text-red-400" />,
+                    title: "Missed Opportunity",
+                    description: "$8,500 Engagement Lead",
+                    date: "Saturday, 9:30 PM",
+                    iconClassName: "text-red-500",
+                    titleClassName: "text-red-500",
+                    className: "[grid-area:stack] translate-x-12 translate-y-2 hover:-translate-y-1 before:absolute before:w-[100%] before:outline-1 before:rounded-xl before:outline-border before:h-[100%] before:content-[''] before:bg-blend-overlay before:bg-background/50 grayscale-[100%] hover:before:opacity-0 before:transition-opacity before:duration-700 hover:grayscale-0 before:left-0 before:top-0",
+                  },
+                  {
+                    icon: <PhoneCall className="size-4 text-red-400" />,
+                    title: "Missed Opportunity",
+                    description: "$15,000 Watch Inquiry",
+                    date: "Yesterday, 11:45 PM",
+                    iconClassName: "text-red-500",
+                    titleClassName: "text-red-500",
+                    className: "[grid-area:stack] translate-x-24 translate-y-10 hover:translate-y-6",
+                  },
+                ]}
+              />
+            </motion.div>
+            <div className="absolute bottom-0 left-0 md:-left-10 p-4 md:p-8 glass-card rounded-xl md:rounded-[2rem] border-white/10 max-w-[200px] sm:max-w-xs text-navy-950 dark:text-white shadow-2xl z-20">
+              <p className="italic text-sm md:text-lg serif leading-tight">"We missed a $12k anniversary lead on a Sunday. Never again."</p>
+              <p className="text-[9px] md:text-[10px] uppercase font-bold mt-2 md:mt-4 tracking-widest text-navy-400 dark:text-navy-300">— London Diamonds</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Outbound Calls Section */}
+      <section className="snap-start snap-always min-h-screen flex flex-col justify-center py-20 px-6 bg-transparent transition-colors relative">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: isDarkMode
+              ? `linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+                 linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)`
+              : `linear-gradient(to right, rgba(16,42,67,0.14) 1px, transparent 1px),
+                 linear-gradient(to bottom, rgba(16,42,67,0.14) 1px, transparent 1px)`,
+            backgroundSize: '32px 32px',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            maskSize: '100% 100%',
+          }}
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64 md:h-72">
+          <DottedSurface
+            isDarkMode={isDarkMode}
+            className="h-full w-full opacity-80 [mask-image:linear-gradient(to_top,black,transparent)]"
+          />
+        </div>
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-20 relative z-10">
+          <div className="order-2 md:order-1 flex-1 space-y-8 animate-in slide-in-from-left duration-1000">
+            <h2 className="text-4xl md:text-7xl font-bold serif leading-[1.1] text-slate-900 dark:text-white">Proactive <br/><span className="italic shimmer-text">Reach</span></h2>
+            <p className="text-xl text-navy-600 dark:text-navy-300 font-light leading-relaxed">
+              Fourcee doesn't just wait for customers. It actively nurtures your pipeline with high-fidelity outbound reminders and follow-ups.
+            </p>
+            <div className="grid grid-cols-2 gap-8 pt-4">
+              <div className="glass-card p-6 rounded-3xl">
+                <p className="text-4xl font-bold serif text-navy-900 dark:text-white">30%</p>
+                <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-navy-400 mt-2">No-show reduction</p>
+              </div>
+              <div className="glass-card p-6 rounded-3xl">
+                <p className="text-4xl font-bold serif text-navy-900 dark:text-white">2x</p>
+                <p className="text-[10px] uppercase font-bold tracking-[0.2em] text-navy-400 mt-2">Follow-up speed</p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={scrollToPricing}
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-navy-900 text-white dark:bg-white dark:text-navy-950 px-7 py-3 text-[10px] font-bold uppercase tracking-[0.25em] shadow-2xl hover:scale-105 active:scale-95 transition-all w-full sm:w-auto justify-center"
+            >
+              <span>Select a package</span>
+            </button>
+          </div>
+          <div className="order-1 md:order-2 flex-1 relative animate-in slide-in-from-right duration-1000 flex items-center justify-center">
+            <IncomingCallPhone className="w-full max-w-[260px] sm:max-w-[320px]" isDarkMode={isDarkMode} />
+          </div>
+        </div>
+      </section>
+
+      {/* Integrations Section — contained on mobile, no horizontal overflow */}
+      <section className="snap-start snap-always min-h-screen flex flex-col justify-center pt-32 pb-16 overflow-x-hidden bg-transparent transition-colors">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 min-w-0">
+          <div className="text-center mb-16 md:mb-24 max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl md:text-7xl font-bold serif text-slate-900 dark:text-white mb-6 md:mb-8 tracking-tighter break-words">Unified Workflow</h2>
+            <p className="text-slate-600 dark:text-navy-400 uppercase tracking-[0.2em] text-[11px] font-bold mb-6">Built for your current stack</p>
+            <p className="text-base sm:text-lg text-slate-800 dark:text-navy-300 font-light leading-relaxed">
+              Fourcee integrates seamlessly with the tools you already use. From deep Nivoda inventory sync to global e-commerce leaders, your existing workflow remains untouched, only enhanced.
+            </p>
+          </div>
+
+          <div className="mb-16 md:mb-24 relative overflow-hidden rounded-2xl sm:rounded-[3rem] md:rounded-[4rem] shadow-2xl w-full max-w-full">
+            <div
+              className="relative w-full h-[45vh] min-h-[220px] max-h-[400px] sm:h-[50vh] sm:max-h-[480px] md:h-[600px] md:min-h-[500px] md:max-h-none"
+              style={{
+                maskImage: 'radial-gradient(ellipse 65% 65% at 50% 50%, black 20%, transparent 100%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 65% 65% at 50% 50%, black 20%, transparent 100%)',
+                maskSize: '100% 100%',
+              }}
+            >
+              <img 
+                src={workflowImage} 
+                className="w-full h-full object-contain brightness-75" 
+                alt="Connected digital ecosystem" 
+              />
+            </div>
+            <div
+              className="absolute inset-0 pointer-events-none z-[1]"
+              style={{
+                background: isDarkMode
+                  ? 'radial-gradient(ellipse 75% 75% at 50% 50%, transparent 35%, rgba(5,27,45,0.92) 100%)'
+                  : 'radial-gradient(ellipse 75% 75% at 50% 50%, transparent 35%, rgba(255,255,255,0.92) 100%)',
+              }}
+              aria-hidden
+            />
+            <div className="absolute inset-0 z-[2] bg-gradient-to-t from-navy-950/80 via-transparent to-transparent flex items-end p-4 sm:p-8 md:p-16 pointer-events-none">
+              <div className="max-w-xl">
+                <h3 className={`text-2xl sm:text-3xl md:text-4xl font-bold serif mb-2 md:mb-4 italic ${isDarkMode ? 'text-white' : 'text-slate-900'}`}>The Synchronized Showroom</h3>
+                <p className={`font-light text-sm sm:text-base md:text-lg ${isDarkMode ? 'text-white/80' : 'text-slate-800'}`}>Fourcee acts as the intelligent bridge between your client interactions and your inventory, scheduling, and CRM systems.</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="md:grid md:grid-cols-2 lg:grid-cols-3 gap-8 flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 pb-2 md:overflow-visible md:flex-none scrollbar-thin">
+            {INTEGRATIONS_DATA.map((cat, idx) => (
+              <div key={idx} className="glass-card p-6 sm:p-10 rounded-[2rem] sm:rounded-[3rem] border border-navy-50 dark:border-navy-800 flex flex-col flex-shrink-0 w-[calc(50%-0.5rem)] min-w-[calc(50%-0.5rem)] sm:min-w-0 snap-center md:w-auto">
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-navy-400 mb-6">{cat.category}</h4>
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {cat.popular.map(p => (
+                    <span key={p} className="px-4 py-2 bg-navy-900 dark:bg-white text-white dark:text-navy-950 rounded-full text-xs font-bold tracking-tight shadow-sm">
+                      {p}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-sm text-navy-500 dark:text-navy-400 leading-relaxed mb-8 flex-1">
+                  {cat.description}
+                </p>
+                <button 
+                  onClick={() => setExpandedIntegration(expandedIntegration === idx ? null : idx)}
+                  className="text-[10px] font-bold uppercase tracking-widest text-navy-900 dark:text-white border-b border-navy-900/20 dark:border-white/20 pb-1 w-fit hover:border-navy-900 dark:hover:border-white transition-all"
+                >
+                  {expandedIntegration === idx ? 'Close Details ↑' : 'View Others ↓'}
+                </button>
+                {expandedIntegration === idx && (
+                  <div className="mt-8 pt-8 border-t border-navy-50 dark:border-navy-800 animate-in slide-in-from-top-4">
+                    <div className="flex flex-wrap gap-x-6 gap-y-3">
+                      {cat.others.map(other => (
+                        <div key={other} className="flex items-center gap-2">
+                          <div className="w-1 h-1 bg-navy-200 dark:bg-navy-700 rounded-full" />
+                          <span className="text-xs font-medium text-navy-400 dark:text-navy-500">{other}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nivoda Deep Integration Section — inverts for light mode */}
+      <section
+        className="snap-start snap-always min-h-[80vh] flex flex-col justify-center px-6 py-16 md:py-24 relative transition-colors"
+        style={{
+          backgroundColor: isDarkMode ? '#090906' : '#f4f5f7',
+          maskImage:
+            'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+          WebkitMaskImage:
+            'linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%)',
+        }}
+      >
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: isDarkMode
+              ? `repeating-radial-gradient(circle at 0 0, rgba(194,204,214,0.12) 0, rgba(194,204,214,0.12) 1px, transparent 1px, transparent 3px)`
+              : `repeating-radial-gradient(circle at 0 0, rgba(16,42,67,0.08) 0, rgba(16,42,67,0.08) 1px, transparent 1px, transparent 3px)`,
+            opacity: 0.9,
+          }}
+        />
+        <div className="relative max-w-6xl mx-auto grid gap-10 lg:gap-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] items-center">
+          <div className="relative flex items-center justify-center order-1">
+            <div className="w-full max-w-[220px] sm:max-w-[260px] md:max-w-md aspect-[4/5]">
+              <svg
+                viewBox="0 0 100 125"
+                className={`w-full h-full ${!isDarkMode ? 'invert' : ''}`}
+                aria-label="Nivoda inventory layers feeding Fourcee"
+                role="img"
+              >
+                <defs>
+                  <filter id="nivoda-soft-feather">
+                    <feGaussianBlur stdDeviation="10" />
+                  </filter>
+                  <mask id="nivoda-soft-mask">
+                    <rect width="100" height="125" fill="black" />
+                    <rect
+                      x="10"
+                      y="10"
+                      width="80"
+                      height="105"
+                      rx="20"
+                      ry="20"
+                      fill="white"
+                      filter="url(#nivoda-soft-feather)"
+                    />
+                  </mask>
+                </defs>
+                <image
+                  href={nivodaGif}
+                  x="0"
+                  y="0"
+                  width="100"
+                  height="125"
+                  preserveAspectRatio="xMidYMid slice"
+                  mask="url(#nivoda-soft-mask)"
+                />
+              </svg>
+            </div>
+          </div>
+          <div className="space-y-6 text-left order-2">
+            <p className={`text-[10px] font-bold uppercase tracking-[0.3em] ${isDarkMode ? 'text-[#C2CCD6]/80' : 'text-navy-600/80'}`}>
+              Nivoda-native inventory intelligence
+            </p>
+            <h2 className={`text-3xl sm:text-4xl md:text-5xl font-bold serif tracking-tight ${isDarkMode ? 'text-white' : 'text-navy-900'}`}>
+              Your AI hears<br className="hidden sm:block" /> the same diamonds you see.
+            </h2>
+            <p className={`text-sm sm:text-base max-w-xl leading-relaxed ${isDarkMode ? 'text-[#C2CCD6]/90' : 'text-navy-700/90'}`}>
+              Fourcee doesn&apos;t guess what&apos;s in your case — it reads live data from Nivoda. Every search,
+              estimate and availability check is backed by the same inventory spine your buyers already trust.
+            </p>
+            <div className={`grid gap-4 sm:grid-cols-2 text-xs sm:text-sm ${isDarkMode ? 'text-[#C2CCD6]' : 'text-navy-700'}`}>
+              <div className={`rounded-2xl border px-4 py-3 backdrop-blur-md ${isDarkMode ? 'border-[#535B68]/60 bg-black/40' : 'border-navy-200 bg-white/80'}`}>
+                <p className={`font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-navy-900'}`}>Real-time availability</p>
+                <p className="leading-relaxed">
+                  Quote from live Nivoda feeds so your AI never offers stones that have already left the pipeline.
+                </p>
+              </div>
+              <div className={`rounded-2xl border px-4 py-3 backdrop-blur-md ${isDarkMode ? 'border-[#3A5A88]/70 bg-black/40' : 'border-navy-200 bg-white/80'}`}>
+                <p className={`font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-navy-900'}`}>Smart search logic</p>
+                <p className="leading-relaxed">
+                  Translate vague requests (&quot;oval, lab-grown, under 3 carats&quot;) into structured Nivoda queries
+                  in the background.
+                </p>
+              </div>
+              <div className={`rounded-2xl border px-4 py-3 backdrop-blur-md sm:col-span-2 ${isDarkMode ? 'border-[#535B68]/60 bg-black/40' : 'border-navy-200 bg-white/80'}`}>
+                <p className={`font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-navy-900'}`}>CRM + analytics ready</p>
+                <p className="leading-relaxed">
+                  Every Nivoda-backed search can be logged against a contact in your CRM and surfaced in the analytics
+                  portal — so you see which profiles are driving real diamond demand.
+                </p>
+              </div>
+            </div>
+            <p className={`text-[10px] uppercase tracking-[0.25em] pt-2 ${isDarkMode ? 'text-[#C2CCD6]/70' : 'text-navy-600/70'}`}>
+              Built to sit on top of your existing Nivoda workflows — not replace them.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
+
+
+
+      {/* Solutions / Features */}
+      <section className="snap-start snap-always flex flex-col justify-center pt-12 pb-8 md:pb-12 px-6 bg-transparent transition-colors relative">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: isDarkMode
+              ? `linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+                 linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px)`
+              : `linear-gradient(to right, rgba(16,42,67,0.14) 1px, transparent 1px),
+                 linear-gradient(to bottom, rgba(16,42,67,0.14) 1px, transparent 1px)`,
+            backgroundSize: '32px 32px',
+            maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 82%, transparent 100%)',
+            maskSize: '100% 100%',
+          }}
+        />
+        <div className="max-w-4xl mx-auto text-center relative z-10 px-4">
+          <h2 className="text-5xl md:text-8xl font-bold serif text-navy-900 dark:text-white mb-6 tracking-tighter">Boutique Intelligence</h2>
+          <div className="grid md:grid-cols-3 gap-3 md:gap-4 mt-2">
+            {[
+              { title: "Voice Cloning", desc: "Your actual voice, scaled across 100 simultaneous calls." },
+              { title: "Live Estimates", desc: "Instant pricing based on daily market spot rates." },
+              { title: "VIP Escalation", desc: "Automatically connects ultra-high net worth leads to your personal line." }
+            ].map((f, i) => (
+              <div key={i} className="p-12 rounded-[2.5rem] bg-white/80 dark:bg-white/5 dark:backdrop-blur-xl border border-navy-100 dark:border-white/10 hover:shadow-2xl transition-all group shadow-sm">
+                <div className="w-12 h-12 bg-navy-900 dark:bg-white rounded-2xl mb-8 flex items-center justify-center text-white dark:text-navy-950 font-bold text-xl group-hover:scale-110 transition-transform">
+                  {i + 1}
+                </div>
+                <h3 className="text-2xl font-bold serif mb-4 text-navy-900 dark:text-white">{f.title}</h3>
+                <p className="text-sm leading-relaxed text-navy-500 dark:text-navy-300 font-medium">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto mt-16 relative z-10 px-4 sm:px-6 w-full min-w-0">
+          <FaqMonochrome
+            isDarkMode={isDarkMode}
+            faqs={FAQ_ITEMS}
+            steps={JOURNEY_STEPS}
+          />
+        </div>
+      </section>
+
+      {/* Final snap point just above footer so bottom doesn't bounce */}
+      <div className="snap-end snap-always h-0" />
+
+      <FloatingCalendar />
+      {showTester && <PhoneTester onClose={() => setShowTester(false)} />}
+    </div>
+  ); };
+
+  const BlogPage = () => (
+    <div className="pt-24 pb-12 px-6 max-w-6xl mx-auto animate-in fade-in duration-700 bg-transparent">
+      <div className="flex justify-center mb-6">
+        <img
+          src={isDarkMode ? fcWhite : fcBlack}
+          alt="Fourcee mark"
+          className="h-9 md:h-10 object-contain"
+        />
+      </div>
+      <h1 className="text-6xl font-bold serif mb-4 text-center tracking-tighter text-slate-900 dark:text-white">The Ledger</h1>
+      <p className="text-center text-slate-600 dark:text-navy-300 uppercase tracking-[0.3em] text-[10px] font-bold mb-20">Strategic Insights for Luxury Retailers</p>
+      
+      <div className="grid md:grid-cols-2 gap-10 md:gap-16">
+        {BLOG_POSTS.map(post => (
+          <button
+            key={post.id}
+            type="button"
+            onClick={() => navigate(AppView.BLOG_POST, post)}
+            className="text-left"
+          >
+            <ArticleCard
+              headline={post.title}
+              excerpt={post.excerpt}
+              cover={post.imageUrl}
+              tag="Insight"
+              readingTimeSeconds={420}
+              writer="Alyssa Peters"
+              publishedLabel={post.date}
+              clampLines={3}
+              isDarkMode={isDarkMode}
+            />
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const TermsPage = () => (
+    <div className="pt-24 pb-16 px-6 max-w-4xl mx-auto animate-in fade-in duration-700 bg-transparent">
+      <h1 className="text-4xl md:text-5xl font-bold serif mb-6 tracking-tighter dark:text-white">
+        Safeguards, Disclaimer & Terms
+      </h1>
+      <p className="text-sm text-navy-500 dark:text-navy-300 mb-8 leading-relaxed">
+        This page is a plain-language overview of how we structure deployments of Fourcee. It is not a substitute for a
+        signed services agreement, but it explains the spirit in which we work with jewelers.
+      </p>
+
+      <div className="space-y-8 text-sm text-navy-700 dark:text-navy-200 leading-relaxed">
+        <section>
+          <h2 className="font-bold text-navy-900 dark:text-white mb-2">Commercial terms & payment</h2>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>
+              <span className="font-semibold">Setup fee.</span> For standard monthly subscriptions, a one-time setup fee
+              applies by tier. If you pay annually for a published plan, that setup fee is typically waived. Custom
+              agreements may differ. When a setup fee applies, it is charged once per showroom and covers discovery,
+              call-flow design, integrations (including Nivoda, calendars and CRM), test environment, and iterative
+              tuning.
+            </li>
+            <li>
+              <span className="font-semibold">First payment — but only after sign-off.</span> We typically collect your
+              first month or annual subscription (and any applicable setup fee) before go-live. Billing for the
+              subscription period only begins once testing is complete and you confirm in writing that you are happy
+              for Fourcee to go live.
+            </li>
+            <li>
+              <span className="font-semibold">Ongoing subscription.</span> After go-live, you pay a recurring
+              subscription as per your selected tier. Any changes to pricing, terms or scope are always agreed in
+              writing.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="font-bold text-navy-900 dark:text-white mb-2">Usage, data & privacy</h2>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>
+              <span className="font-semibold">Call recording & analytics.</span> Wherever legally permitted and
+              contractually agreed, calls may be recorded, transcribed and analysed to improve performance. You can
+              choose how long recordings are stored and who in your team can access them.
+            </li>
+            <li>
+              <span className="font-semibold">Third‑party tools.</span> Fourcee connects to services such as Nivoda,
+              CRMs and calendar systems. Each of those tools has its own terms; using them through Fourcee means you
+              also agree to their respective terms and privacy policies.
+            </li>
+            <li>
+              <span className="font-semibold">Your data stays yours.</span> Customer data and call history belong to
+              your business. We process that data solely to deliver and improve the service, in line with the agreement
+              we sign together.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="font-bold text-navy-900 dark:text-white mb-2">ROI calculator & performance disclaimer</h2>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>
+              The ROI calculator and case studies on this site are <span className="font-semibold">illustrative</span>{' '}
+              only. They use assumptions about close rates, missed call capture and staffing efficiencies that may not
+              match your exact business.
+            </li>
+            <li>
+              Actual performance depends on many factors outside of our control — including your offer, pricing,
+              competition, sales process and macroeconomic conditions. We therefore cannot promise or guarantee a
+              specific revenue outcome.
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 className="font-bold text-navy-900 dark:text-white mb-2">Limitations of liability</h2>
+          <p>
+            While we design Fourcee with guardrails, testing and sensible defaults, no AI system is perfect. To the
+            maximum extent permitted by law, our liability for any indirect, incidental or consequential loss is
+            excluded. Direct losses are limited to the fees you have paid to us over a defined recent period, as set out
+            in the formal agreement.
+          </p>
+        </section>
+
+        <section>
+          <h2 className="font-bold text-navy-900 dark:text-white mb-2">Need the full legal text?</h2>
+          <p>
+            Before deployment we will share a full services agreement or order form for review and signature. That
+            document will always govern in the event of any conflict with this summary.
+          </p>
+        </section>
+      </div>
+    </div>
+  );
+
+  return (
+    <div ref={scrollContainerRef} className="relative h-screen flex flex-col overflow-y-auto overflow-x-hidden snap-y snap-mandatory bg-white dark:bg-navy-950 transition-colors">
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <EtherealShadow 
+          color={isDarkMode ? "rgba(255, 255, 255, 0.12)" : "rgba(16, 42, 67, 0.08)"}
+          animation={isDarkMode ? { scale: 100, speed: 45 } : { scale: 40, speed: 20 }}
+          noise={isDarkMode ? { opacity: 0.6, scale: 1.2 } : { opacity: 0.3, scale: 1 }}
+        />
+      </div>
+
+      {currentView === AppView.LANDING && (
+        <div className="fixed top-8 sm:top-8 md:top-12 left-[68%] sm:left-[60%] md:left-[58%] -translate-x-1/2 z-[100] pointer-events-none">
+          <img
+            src={isDarkMode ? fcWhite : fcBlack}
+            alt="Fourcee"
+            className="h-16 sm:h-20 md:h-24 w-auto drop-shadow-[0_18px_45px_rgba(0,0,0,0.65)] opacity-100"
+          />
+        </div>
+      )}
+      <FloatingNav onNavigate={setCurrentView} currentView={currentView} toggleDarkMode={toggleDarkMode} isDarkMode={isDarkMode} />
+      
+      <main className="relative z-10">
+        {currentView === AppView.LANDING && <LandingPage scrollContainerRef={scrollContainerRef} />}
+        {currentView === AppView.LEAD_MAGNET && auditData && (
+          <AuditPage
+            data={auditData}
+            isDarkMode={isDarkMode}
+            onGetLive={() => navigate(AppView.CHECKOUT)}
+            onBookCall={openCalendarBooking}
+          />
+        )}
+        {currentView === AppView.LEAD_MAGNET && !auditData && !auditDataLoading && (
+          <div className="min-h-screen flex items-center justify-center">
+            <p className="text-navy-600 dark:text-navy-300">Failed to load audit data</p>
+          </div>
+        )}
+        {currentView === AppView.LEAD_MAGNET && auditDataLoading && (
+          <div className="min-h-screen flex items-center justify-center">
+            <p className="text-navy-600 dark:text-navy-300">Loading audit...</p>
+          </div>
+        )}
+        {currentView === AppView.BLOG && <BlogPage />}
+        {currentView === AppView.BLOG_POST && selectedPost && (
+           <div className="pt-24 animate-in fade-in duration-700">
+              <button onClick={() => navigate(AppView.BLOG)} className="px-6 py-12 text-navy-300 hover:text-navy-900 dark:hover:text-white uppercase text-[10px] font-bold tracking-widest transition-colors">← Back to Ledger</button>
+              <div className="max-w-3xl mx-auto px-6 pb-12">
+                <h1 className="text-5xl md:text-7xl font-bold serif mb-12 leading-none dark:text-white">{selectedPost.title}</h1>
+                <div className="prose prose-navy dark:prose-invert max-w-none space-y-8 text-lg text-navy-800 dark:text-navy-100 font-light leading-relaxed">
+                  {selectedPost.content.split('\n').map((line, i) => <p key={i}>{line}</p>)}
+                </div>
+              </div>
+           </div>
+        )}
+        {currentView === AppView.CHECKOUT && <CheckoutFlow isDarkMode={isDarkMode} initialPackageId={preSelectedPackageId} />}
+        {currentView === AppView.DASHBOARD && <CRMView isDarkMode={isDarkMode} />}
+        {currentView === AppView.ADMIN && <AdminDashboard isDarkMode={isDarkMode} />}
+        {currentView === AppView.TERMS && <TermsPage />}
+      </main>
+
+      <button
+        type="button"
+        onClick={() => navigate(AppView.ADMIN)}
+        className="fixed bottom-4 left-4 z-[120] h-3 w-3 rounded-full bg-navy-900/20 dark:bg-white/20 hover:bg-navy-900/50 dark:hover:bg-white/50 transition-colors"
+        aria-label="Hidden admin access"
+        title="Admin access"
+      />
+
+      {/* Global footer: animated dotted surface (white in dark mode, black in light) */}
+      {currentView === AppView.LEAD_MAGNET ? (
+        <footer className="relative w-full min-h-[320px] h-[320px] flex-shrink-0 overflow-hidden z-20 border-t border-white/10 bg-black">
+          <div
+            className="absolute inset-0 z-[5]"
+            style={{
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 100%)',
+            }}
+          />
+          <DottedSurface isDarkMode className="absolute inset-0 z-10 h-full w-full opacity-95" />
+          <div className="absolute inset-0 z-[15] flex items-end justify-center pb-20 px-4">
+            <button
+              type="button"
+              onClick={() => navigate(AppView.TERMS)}
+              className="text-[10px] font-bold uppercase tracking-[0.25em] text-white bg-white/5 border border-white/20 rounded-full px-5 py-2 backdrop-blur-md hover:bg-white/10 transition-colors"
+            >
+              Terms, safeguards &amp; disclaimer
+            </button>
+          </div>
+        </footer>
+      ) : (
+        <footer className="relative w-full min-h-[360px] h-[360px] flex-shrink-0 overflow-hidden -mt-60 z-20">
+          <div
+            className="absolute inset-0 z-[5]"
+            style={{
+              background: isDarkMode
+                ? 'linear-gradient(to bottom, transparent 0%, rgba(5,27,45,0.3) 100%)'
+                : 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.4) 100%)',
+            }}
+          />
+          <DottedSurface isDarkMode={isDarkMode} className="z-10" />
+          <div className="absolute inset-0 z-[15] flex items-end justify-center pb-28 px-4">
+            <button
+              type="button"
+              onClick={() => navigate(AppView.TERMS)}
+              className="text-[10px] font-bold uppercase tracking-[0.25em] text-navy-500 dark:text-navy-200 bg-white/80 dark:bg-navy-950/80 border border-navy-200/60 dark:border-white/20 rounded-full px-5 py-2 backdrop-blur-md shadow-md hover:bg-white dark:hover:bg-navy-900 transition-colors"
+            >
+              Terms, safeguards &amp; disclaimer
+            </button>
+          </div>
+        </footer>
+      )}
+      <FloatingAiAssistant />
+    </div>
+  );
+};
+
+export default App;

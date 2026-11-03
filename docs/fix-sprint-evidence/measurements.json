@@ -1,0 +1,262 @@
+[
+  {
+    "label": "before",
+    "shots": {
+      "desktop:timings": {
+        "view": "desktop",
+        "wall_nav_to_splash_gone_ms": 5209,
+        "splash_on_screen_ms": 3706,
+        "intro_nav_to_splash_gone_ms": 4787,
+        "hero_3d_first_frame_from_nav_ms": null,
+        "hero_3d_first_frame_from_splash_gone_ms": null,
+        "fcp_ms": 1212,
+        "marks": {
+          "splash_on": 1081.2999999999884,
+          "splash_off": 4786.799999999988,
+          "canvas_present": 4786.799999999988,
+          "now": 25844.099999999977
+        },
+        "splash_pass": false,
+        "frame_pass": false
+      },
+      "desktop:checkout": {
+        "heading": "INVOICE & WISE HANDOFF",
+        "envLeak": true,
+        "snippet": [
+          "INVOICE & WISE HANDOFF",
+          "We do not collect card numbers in this browser. After you confirm details, we send a Wise invoice / payment link and book your onboarding call. No fake PCI vault — real payment stays on Wise.",
+          "We email a Wise invoice for the amount above (or open your payment link if configured).",
+          "Wise payment URL not configured yet. Set VITE_WISE_PAYMENT_URL when the live invoice link is ready — until then, request invoice below and we'll send it manually.",
+          "INVOICE / WISE · NO CARD FIELDS ON THIS PAGE",
+          "REQUEST INVOICE · $5,997"
+        ]
+      },
+      "desktop:roi": {
+        "roiText": "ROI in 0.0 Months",
+        "isZero": true,
+        "isUnderOne": false
+      },
+      "desktop:menu": {
+        "label": "Average deal value: $4,200",
+        "value": "12",
+        "step": "1"
+      },
+      "desktop:audit": {
+        "kind": "skip-phone-intro"
+      },
+      "desktop:splash": {
+        "skipVisible": false
+      },
+      "desktop:footer": {
+        "missing": false,
+        "overlapPx": 0,
+        "gapPx": 34,
+        "btn": {
+          "top": 739,
+          "bottom": 776
+        },
+        "dock": {
+          "top": 810,
+          "bottom": 880
+        },
+        "btnText": "Terms, safeguards & disclaimer"
+      },
+      "mobile:timings": {
+        "view": "mobile",
+        "wall_nav_to_splash_gone_ms": 5397,
+        "splash_on_screen_ms": 3631,
+        "intro_nav_to_splash_gone_ms": 5125,
+        "hero_3d_first_frame_from_nav_ms": 9098,
+        "hero_3d_first_frame_from_splash_gone_ms": 3973,
+        "fcp_ms": 1608,
+        "marks": {
+          "splash_on": 1493.3999999999069,
+          "splash_off": 5124.699999999953,
+          "canvas_present": 5124.699999999953,
+          "ring_scrolled": 5465.5,
+          "ring_poster_ready": 9097.599999999977,
+          "now": 9682.5
+        },
+        "splash_pass": false,
+        "frame_pass": true
+      },
+      "mobile:checkout": {
+        "heading": "INVOICE & WISE HANDOFF",
+        "envLeak": true,
+        "snippet": [
+          "INVOICE & WISE HANDOFF",
+          "We do not collect card numbers in this browser. After you confirm details, we send a Wise invoice / payment link and book your onboarding call. No fake PCI vault — real payment stays on Wise.",
+          "We email a Wise invoice for the amount above (or open your payment link if configured).",
+          "Wise payment URL not configured yet. Set VITE_WISE_PAYMENT_URL when the live invoice link is ready — until then, request invoice below and we'll send it manually.",
+          "INVOICE / WISE · NO CARD FIELDS ON THIS PAGE",
+          "REQUEST INVOICE · $5,997"
+        ]
+      },
+      "mobile:roi": {
+        "roiText": "ROI in 0.0 Months",
+        "isZero": true,
+        "isUnderOne": false
+      },
+      "mobile:menu": {
+        "label": "Average deal value: $4,200",
+        "value": "12",
+        "step": "1"
+      },
+      "mobile:audit": {
+        "kind": "skip-phone-intro"
+      },
+      "mobile:splash": {
+        "skipVisible": false
+      },
+      "mobile:footer": {
+        "missing": false,
+        "overlapPx": 0,
+        "gapPx": 38,
+        "btn": {
+          "top": 691,
+          "bottom": 728
+        },
+        "dock": {
+          "top": 766,
+          "bottom": 828
+        },
+        "btnText": "Terms, safeguards & disclaimer"
+      }
+    },
+    "errors": []
+  },
+  {
+    "label": "after",
+    "shots": {
+      "desktop:timings": {
+        "view": "desktop",
+        "wall_nav_to_splash_gone_ms": 1940,
+        "splash_on_screen_ms": 1360,
+        "intro_nav_to_splash_gone_ms": 1836,
+        "hero_3d_first_frame_from_nav_ms": 5505,
+        "hero_3d_first_frame_from_splash_gone_ms": 3669,
+        "fcp_ms": 536,
+        "marks": {
+          "splash_on": 475.5,
+          "splash_off": 1835.6999999999534,
+          "canvas_present": 1835.6999999999534,
+          "hero_poster_hidden": 5504.900000000023,
+          "now": 6092.79999999993
+        },
+        "splash_pass": true,
+        "frame_pass": true
+      },
+      "desktop:checkout": {
+        "heading": "REQUEST YOUR INVOICE",
+        "envLeak": false,
+        "snippet": [
+          "REQUEST YOUR INVOICE",
+          "We do not collect card numbers in this browser. Confirm your details and we email you an invoice and a link to book your onboarding call. Payment happens on the invoice, never on this page.",
+          "Quote in ZAR · you will receive the invoice in ZAR",
+          "We email you an invoice for the amount above (quoted in ZAR). Nothing is charged on this page.",
+          "Request the invoice below. We email it to you with a link to book onboarding. Nothing is charged on this page.",
+          "INVOICE BY EMAIL · NO CARD FIELDS ON THIS PAGE",
+          "REQUEST INVOICE · $5,997"
+        ]
+      },
+      "desktop:roi": {
+        "roiText": "ROI in under 1 month",
+        "isZero": false,
+        "isUnderOne": true
+      },
+      "desktop:menu": {
+        "label": "Average deal value: $4,250",
+        "value": "12",
+        "step": "1"
+      },
+      "desktop:splash": {
+        "skipVisible": true
+      },
+      "desktop:footer": {
+        "missing": false,
+        "overlapPx": 0,
+        "gapPx": 86,
+        "btn": {
+          "top": 687,
+          "bottom": 724
+        },
+        "dock": {
+          "top": 810,
+          "bottom": 880
+        },
+        "btnText": "Terms, safeguards & disclaimer"
+      },
+      "mobile:timings": {
+        "view": "mobile",
+        "wall_nav_to_splash_gone_ms": 1925,
+        "splash_on_screen_ms": 1354,
+        "intro_nav_to_splash_gone_ms": 1836,
+        "hero_3d_first_frame_from_nav_ms": 4874,
+        "hero_3d_first_frame_from_splash_gone_ms": 3037,
+        "fcp_ms": 532,
+        "marks": {
+          "splash_on": 482.19999999995343,
+          "splash_off": 1836.4000000000233,
+          "ring_scrolled": 2045,
+          "canvas_present": 2086.29999999993,
+          "ring_poster_ready": 4873.79999999993,
+          "now": 5464.199999999953
+        },
+        "splash_pass": true,
+        "frame_pass": true
+      },
+      "mobile:checkout": {
+        "heading": "REQUEST YOUR INVOICE",
+        "envLeak": false,
+        "snippet": [
+          "REQUEST YOUR INVOICE",
+          "We do not collect card numbers in this browser. Confirm your details and we email you an invoice and a link to book your onboarding call. Payment happens on the invoice, never on this page.",
+          "Quote in ZAR · you will receive the invoice in ZAR",
+          "We email you an invoice for the amount above (quoted in ZAR). Nothing is charged on this page.",
+          "Request the invoice below. We email it to you with a link to book onboarding. Nothing is charged on this page.",
+          "INVOICE BY EMAIL · NO CARD FIELDS ON THIS PAGE",
+          "REQUEST INVOICE · $5,997"
+        ]
+      },
+      "mobile:roi": {
+        "roiText": "ROI in under 1 month",
+        "isZero": false,
+        "isUnderOne": true
+      },
+      "mobile:menu": {
+        "label": "Average deal value: $4,250",
+        "value": "12",
+        "step": "1"
+      },
+      "mobile:splash": {
+        "skipVisible": true
+      },
+      "mobile:footer": {
+        "missing": false,
+        "overlapPx": 0,
+        "gapPx": 89,
+        "btn": {
+          "top": 640,
+          "bottom": 677
+        },
+        "dock": {
+          "top": 766,
+          "bottom": 828
+        },
+        "btnText": "Terms, safeguards & disclaimer"
+      }
+    },
+    "errors": [
+      {
+        "view": "desktop",
+        "name": "audit",
+        "msg": "locator.click: Timeout 20000ms exceeded."
+      },
+      {
+        "view": "mobile",
+        "name": "audit",
+        "msg": "locator.click: Timeout 20000ms exceeded."
+      }
+    ]
+  }
+]
